@@ -1,0 +1,34 @@
+#define macro MAIN() = takes(0) returns(0) {
+    0x00    //[0]
+    calldataload    //[calldata]
+    0xe0 shr //[function_selector]
+
+    // Jump -> function data associated with the selector
+    // If f_select == updateHorseNumber -> jump to that code
+    // If f_select == readHorseNumber -> jump to that code
+    // cast sig 'updateHorseNumber()' == 0x9764dede
+    // cast sig 'readNumberOfHorses()'== 0xe026c017
+
+    dup1 // duplicate 1st stack item [function_selector, function_selector]
+    0x9764dede //[0x9764dede, function_selector, function_selector]
+    eq  //[true_if_func_selector_matches, function_selector]
+    // jump to updateHorseNumber code if true
+    updateJump // [updateHorseNumberProgramCounter, true/false, function_selector]
+    jumpi // it means jump if [function_selector]
+
+    //readNumberOfHorses(), 0xe026c017
+    0xe026c017 //[0xe026c017, function_selector]
+    eq //[true_if_func_selector_matches]
+    readJump //[readJump, true/false]
+    jumpi //[]
+
+    0x00 0x00 revert //[]
+
+    updateJump:
+        SET_NUMBER_OF_HORSES() // jump destination
+    readJump:
+        GET_NUMBER_OF_HORSES()
+}
+
+#define macro SET_NUMBER_OF_HORSES() = takes(0) returns(0){}
+#define macro GET_NUMBER_OF_HORSES() = takes(0) returns(0){}
