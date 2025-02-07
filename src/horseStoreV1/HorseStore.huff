@@ -1,3 +1,5 @@
+#define constant NUMBER_OF_HORSES_STORAGE_SLOT = FREE_STORAGE_POINTER() 
+
 #define macro MAIN() = takes(0) returns(0) {
     0x00    //[0]
     calldataload    //[calldata]
@@ -30,5 +32,15 @@
         GET_NUMBER_OF_HORSES()
 }
 
-#define macro SET_NUMBER_OF_HORSES() = takes(0) returns(0){}
+#define macro SET_NUMBER_OF_HORSES() = takes(0) returns(0){
+    // 2. Get the value to store from calldata
+    0x04  //[4]
+    calldataload //[value]
+    // 1. Give it a storage slot
+    [NUMBER_OF_HORSES_STORAGE_SLOT] // index 0 or slot pointer [storage slot, value]
+
+    // 3. sstore opcode
+    sstore
+    stop
+}
 #define macro GET_NUMBER_OF_HORSES() = takes(0) returns(0){}
