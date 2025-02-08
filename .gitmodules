@@ -1,0 +1,3 @@
+[submodule "math-master/lib/forge-std"]
+	path = math-master/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
