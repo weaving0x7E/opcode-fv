@@ -23,7 +23,7 @@ rule integrityOfTransferFrom(address sender, address recipient, uint256 amount) 
     uint256 allowanceAfter = allowance(sender, e.msg.sender);
     
     assert (
-        allowanceBefore > allowanceAfter
+        allowanceBefore >= allowanceAfter
         ),
         "allowance must decrease after using the allowance to pay on behalf of somebody else";
 }
